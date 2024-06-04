@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/scr/bloc/count/counter_bloc.dart';
-import 'package:shopping/scr/models/brands_model.dart';
+import 'package:shopping/scr/models/product_model.dart';
 
 class PaymentPage extends StatefulWidget {
-  final List<BrandDataModel> productCounts;
+  final List<ProductDataModel> productCounts;
   final num calculateTotalPrice;
-  final Map<BrandDataModel, double> prices;
+  final Map<ProductDataModel, double> prices;
   const PaymentPage({
     Key? key,
     required this.prices,
@@ -69,7 +69,7 @@ class _PaymentPageState extends State<PaymentPage> {
                               '${((item.price) * (state.productCounts[item] ?? 0))}')),
                       //จำนวนสินค้า
                       title: Text(
-                        '   X ${(state.productCounts[item] ?? 1).toString()}',
+                        '   X ${(state.productCounts[item] ?? 0).toString()}',
                         textAlign: TextAlign.center,
                       ),
                     ),

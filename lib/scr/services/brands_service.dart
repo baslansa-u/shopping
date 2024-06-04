@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:shopping/scr/models/apple_model.dart';
 import 'package:shopping/scr/models/brands_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:shopping/scr/models/samsung_model.dart';
+import 'package:shopping/scr/models/product_model.dart';
 
+//fetchData -> jsonDcode -> BransDataModel.fromMap ->fetchData
 class BrandServices {
   static Future<List<BransDataModel>> fetchData() async {
     var client = http.Client();
@@ -30,9 +30,9 @@ class BrandServices {
 }
 
 class BrandAppleServices {
-  static Future<List<BrandsAppleDataModel>> fetchData() async {
+  static Future<List<ProductDataModel>> fetchData() async {
     var client = http.Client();
-    List<BrandsAppleDataModel> apple = [];
+    List<ProductDataModel> apple = [];
     try {
       var response = await client.get(Uri.parse(
           'https://asia-northeast1-wc2022-bot.cloudfunctions.net/products?brand=apple'));
@@ -40,8 +40,8 @@ class BrandAppleServices {
       List result = jsonDecode(response.body);
 
       for (int i = 0; i < result.length; i++) {
-        BrandsAppleDataModel post =
-            BrandsAppleDataModel.fromMap(result[i] as Map<String, dynamic>);
+        ProductDataModel post =
+            ProductDataModel.fromMap(result[i] as Map<String, dynamic>);
         apple.add(post);
       }
       return apple;
@@ -53,9 +53,9 @@ class BrandAppleServices {
 }
 
 class BrandSamsungServices {
-  static Future<List<BrandsSamsungDataModel>> fetchData() async {
+  static Future<List<ProductDataModel>> fetchData() async {
     var client = http.Client();
-    List<BrandsSamsungDataModel> samsung = [];
+    List<ProductDataModel> samsung = [];
     try {
       var response = await client.get(Uri.parse(
           'https://asia-northeast1-wc2022-bot.cloudfunctions.net/products?brand=samsung'));
@@ -63,8 +63,8 @@ class BrandSamsungServices {
       List result = jsonDecode(response.body);
 
       for (int i = 0; i < result.length; i++) {
-        BrandsSamsungDataModel post =
-            BrandsSamsungDataModel.fromMap(result[i] as Map<String, dynamic>);
+        ProductDataModel post =
+            ProductDataModel.fromMap(result[i] as Map<String, dynamic>);
         samsung.add(post);
       }
       return samsung;

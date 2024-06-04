@@ -1,22 +1,22 @@
 import 'dart:convert';
 
-import 'package:shopping/scr/models/brands_model.dart';
+import 'package:equatable/equatable.dart';
 
-List<BrandsSamsungDataModel> brandsSamsungDataModelFromJson(String str) =>
-    List<BrandsSamsungDataModel>.from(
-        json.decode(str).map((x) => BrandsSamsungDataModel.fromMap(x)));
+List<ProductDataModel> productDataModelFromJson(String str) =>
+    List<ProductDataModel>.from(
+        json.decode(str).map((x) => ProductDataModel.fromMap(x)));
 
-String brandsSamsungDataModelToJson(List<BrandsSamsungDataModel> data) =>
+String productDataModelToJson(List<ProductDataModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toMap())));
 
-class BrandsSamsungDataModel implements BrandDataModel {
+class ProductDataModel extends Equatable {
   final int id;
   final String name;
   final String image;
   final int price;
   final String brand;
 
-  BrandsSamsungDataModel({
+  const ProductDataModel({
     required this.id,
     required this.name,
     required this.image,
@@ -24,8 +24,8 @@ class BrandsSamsungDataModel implements BrandDataModel {
     required this.brand,
   });
 
-  factory BrandsSamsungDataModel.fromMap(Map<String, dynamic> json) =>
-      BrandsSamsungDataModel(
+  factory ProductDataModel.fromMap(Map<String, dynamic> json) =>
+      ProductDataModel(
         id: json["id"],
         name: json["name"],
         image: json["image"],
@@ -40,4 +40,8 @@ class BrandsSamsungDataModel implements BrandDataModel {
         "price": price,
         "brand": brand,
       };
+
+//เลือกใช้เฉพาะ id เปรียบเทียบ How ? -> class extends Equatable{} -> override
+  @override
+  List<Object> get props => [id];
 }

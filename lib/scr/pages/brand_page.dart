@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopping/scr/bloc/count/counter_bloc.dart';
+import 'package:shopping/scr/bloc/product/product_bloc.dart';
 import 'package:shopping/scr/bloc/brands/brands_bloc.dart';
+import 'package:shopping/scr/models/product_model.dart';
 import 'package:shopping/scr/pages/cart_page.dart';
-import 'package:shopping/scr/pages/samsung_page.dart';
-
-import 'apple_page.dart';
+import 'package:shopping/scr/pages/product_page.dart';
 
 class Brand extends StatefulWidget {
   const Brand({Key? key}) : super(key: key);
@@ -65,14 +66,27 @@ class _BrandState extends State<Brand> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const ApplePage(),
+                                builder: (context) => BlocProvider(
+                                  create: (context) => ProductBloc()
+                                    ..add(
+                                      FetchProductApple(),
+                                    ),
+                                  child: const ProductPage(brandName: 'Apple'),
+                                ),
                               ),
                             );
                           } else if (brand.name == 'Samsung') {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const SamsungPage(),
+                                builder: (context) => BlocProvider(
+                                  create: (context) => ProductBloc()
+                                    ..add(
+                                      FetchProductSamsung(),
+                                    ),
+                                  child:
+                                      const ProductPage(brandName: 'Samsung'),
+                                ),
                               ),
                             );
                           }
@@ -91,15 +105,22 @@ class _BrandState extends State<Brand> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.orange,
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const CartPage(
-                productCounts: [],
-                totalPrice: 0,
+          final counterBloc = BlocProvider.of<CounterBloc>(context);
+          final productCounts = counterBloc.state.productCounts;
+          // ignore: unnecessary_null_comparison
+          if (productCounts != null) {
+            final List<ProductDataModel> brandDataModels =
+                productCounts.keys.toList();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CartPage(
+                  productCounts: brandDataModels,
+                  totalPrice: 0,
+                ),
               ),
-            ),
-          );
+            );
+          } else {}
         },
         child: const Icon(Icons.shopping_cart_outlined),
       ),

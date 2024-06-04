@@ -26,9 +26,9 @@ class BransDataModel {
       };
 }
 
-abstract class BrandDataModel {
-  int get id;
-  String get name;
-  String get image;
-  int get price;
-}
+// abstract class BrandDataModel {
+//   int get id;
+//   String get name;
+//   String get image;
+//   int get price;
+// }

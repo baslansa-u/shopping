@@ -1,39 +1,34 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
-import 'package:shopping/scr/models/brands_model.dart';
+import 'package:shopping/scr/models/product_model.dart';
 
 part 'counter_event.dart';
 part 'counter_state.dart';
 
 class CounterBloc extends Bloc<CounterEvent, CounterState> {
-  CounterBloc() : super(const CounterState(productCounts: {})) {
+  CounterBloc()
+      : super(const CounterState(productCounts: {}, productCounts2: {})) {
     on<AddProductEvent>(_onAddProductEvent);
     on<RemoveProductEvent>(_onRemoveProductEvent);
   }
 
   FutureOr<void> _onAddProductEvent(
       AddProductEvent event, Emitter<CounterState> emit) {
-    final productCounts =
-        Map<BrandDataModel, int>.from(state.productCounts); //สำเนา
-
+    final productCounts = Map<ProductDataModel, int>.from(state.productCounts);
     productCounts[event.product] = (productCounts[event.product] ?? 0) + 1;
+
     emit(state.copyWith(productCounts: productCounts));
   }
 
   FutureOr<void> _onRemoveProductEvent(
       RemoveProductEvent event, Emitter<CounterState> emit) {
-    final productCountsa =
-        Map<BrandDataModel, int>.from(state.productCounts); // สำเนา
-
-// ตรวจสอบว่าจำนวนสินค้าก่อนหน้าที่ลบออกไป
-    if ((productCountsa[event.product] ?? 0) > 1) {
-      productCountsa[event.product] = (productCountsa[event.product] ?? 0) - 1;
-      emit(state.copyWith(productCounts: productCountsa));
+    final productCounts = Map<ProductDataModel, int>.from(state.productCounts);
+    if ((productCounts[event.product] ?? 0) > 1) {
+      productCounts[event.product] = (productCounts[event.product] ?? 0) - 1;
     } else {
-      productCountsa.remove(event.product);
-      emit(state.copyWith(productCounts: productCountsa));
+      productCounts.remove(event.product);
     }
+    emit(state.copyWith(productCounts: productCounts));
   }
 }

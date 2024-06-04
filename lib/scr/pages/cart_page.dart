@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopping/scr/bloc/count/counter_bloc.dart';
-import 'package:shopping/scr/models/brands_model.dart';
+import 'package:shopping/scr/models/product_model.dart';
 import 'package:shopping/scr/pages/payment_page.dart';
 
 class CartPage extends StatefulWidget {
-  final List<BrandDataModel> productCounts;
+  final List<ProductDataModel> productCounts;
   final int totalPrice;
 
   const CartPage(
@@ -17,8 +17,7 @@ class CartPage extends StatefulWidget {
 }
 
 class _CartPageState extends State<CartPage> {
-//ราคา
-  Map<BrandDataModel, double> prices = {};
+  Map<ProductDataModel, double> prices = {};
 
 //คำนวณ
   num calculateTotalPrice() {
@@ -35,6 +34,86 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<CounterBloc, CounterState>(
       builder: (context, state) {
+        // ตรวจสอบสถานะ isEmpty เพื่ออัพเดต UI
+        if (widget.productCounts.isEmpty) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text('Cart'),
+              centerTitle: false,
+            ),
+            body: const Center(
+              child: Text(
+                'ไม่มีสินค้าในตระกร้า',
+                style: TextStyle(fontSize: 18, color: Colors.red),
+              ),
+            ),
+            bottomNavigationBar: BlocBuilder<CounterBloc, CounterState>(
+              builder: (context, index) {
+                return BottomAppBar(
+                  child: Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: Container(
+                            color: Colors.white,
+                            child: Text(
+                              '    ชำระเงินทั้งหมด ${calculateTotalPrice()} บาท',
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.green),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                            color: widget.productCounts.isEmpty
+                                ? Colors.grey
+                                : Colors.blue,
+                            height: kBottomNavigationBarHeight,
+                            child: widget.productCounts.isEmpty
+                                ? const IconButton(
+                                    onPressed: null, // คลิกไม่ได้ = null
+                                    icon: Icon(
+                                      Icons.monetization_on,
+                                      color: Colors.white,
+                                    ),
+                                  )
+                                : IconButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => PaymentPage(
+                                            productCounts: widget.productCounts,
+                                            prices: prices,
+                                            calculateTotalPrice:
+                                                calculateTotalPrice(),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(
+                                      Icons.monetization_on,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        }
+        // ลบสินค้าจากรายการเมื่อ productCount เป็น 0
+        widget.productCounts
+            .removeWhere((item) => (state.productCounts[item] ?? 0) == 0);
+        print('${state.productCounts}');
         return Scaffold(
           appBar: AppBar(
             title: const Text('Cart'),
@@ -62,7 +141,7 @@ class _CartPageState extends State<CartPage> {
                             leading: Image.network(item.image),
                             title: Text(item.name),
                             subtitle: Text(
-                              'ราคา: ${((prices[item] ?? item.price) * (state.productCounts[item] ?? 0))}',
+                              'ราคา: ${((prices[item] ?? item.price) * 1)}',
                               style:
                                   const TextStyle(fontWeight: FontWeight.bold),
                             ),
@@ -80,13 +159,9 @@ class _CartPageState extends State<CartPage> {
                                         child: IconButton(
                                           padding: EdgeInsets.zero,
                                           onPressed: () {
-                                            setState(() {
-                                              BlocProvider.of<CounterBloc>(
-                                                      context)
-                                                  .add(
-                                                      RemoveProductEvent(item));
-                                              // totalPrice = calculateTotalPrice();
-                                            });
+                                            BlocProvider.of<CounterBloc>(
+                                                    context)
+                                                .add(RemoveProductEvent(item));
                                           },
                                           icon: const Icon(
                                             Icons.remove,
@@ -113,12 +188,9 @@ class _CartPageState extends State<CartPage> {
                                         child: IconButton(
                                           padding: EdgeInsets.zero,
                                           onPressed: () {
-                                            setState(() {
-                                              BlocProvider.of<CounterBloc>(
-                                                      context)
-                                                  .add(AddProductEvent(item));
-                                              // totalPrice = calculateTotalPrice();
-                                            });
+                                            BlocProvider.of<CounterBloc>(
+                                                    context)
+                                                .add(AddProductEvent(item));
                                           },
                                           icon: const Icon(
                                             Icons.add,

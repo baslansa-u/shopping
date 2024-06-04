@@ -1,16 +1,23 @@
 part of 'counter_bloc.dart';
 
-class CounterState extends Equatable {
-  final Map<BrandDataModel, int> productCounts;
+class CounterState {
+  final Map<ProductDataModel, int> productCounts;
 
-  const CounterState({required this.productCounts});
+  //netx solution
+  final Map<int, int> productCounts2;
+
+  const CounterState(
+      {required this.productCounts, required this.productCounts2});
 
   @override
-  List<Object?> get props => [productCounts];
+  List<Object?> get props => [productCounts, productCounts2];
 
-  CounterState copyWith({Map<BrandDataModel, int>? productCounts}) {
+  CounterState copyWith(
+      {Map<ProductDataModel, int>? productCounts,
+      Map<int, int>? productCounts2}) {
     return CounterState(
       productCounts: productCounts ?? this.productCounts,
+      productCounts2: productCounts2 ?? this.productCounts2,
     );
   }
 }
