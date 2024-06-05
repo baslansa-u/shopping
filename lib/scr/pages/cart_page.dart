@@ -34,7 +34,7 @@ class _CartPageState extends State<CartPage> {
   Widget build(BuildContext context) {
     return BlocBuilder<CounterBloc, CounterState>(
       builder: (context, state) {
-        // ตรวจสอบสถานะ isEmpty เพื่ออัพเดต UI
+        //เพิ่มเงือนไข กรณีไม่มีสินค้า
         if (widget.productCounts.isEmpty) {
           return Scaffold(
             appBar: AppBar(
@@ -113,7 +113,6 @@ class _CartPageState extends State<CartPage> {
         // ลบสินค้าจากรายการเมื่อ productCount เป็น 0
         widget.productCounts
             .removeWhere((item) => (state.productCounts[item] ?? 0) == 0);
-        print('${state.productCounts}');
         return Scaffold(
           appBar: AppBar(
             title: const Text('Cart'),

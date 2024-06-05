@@ -141,6 +141,7 @@ class _ProductPageState extends State<ProductPage> {
                 child: Container(
                   color: Colors.orange,
                   height: kBottomNavigationBarHeight,
+                  // ลบ Column เพื่อให้กดในส่วนของ Container(พื้นหลังสีส้ม)
                   child: IconButton(
                     icon: const Icon(
                       Icons.shopping_cart_outlined,
