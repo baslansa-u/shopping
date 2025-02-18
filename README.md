@@ -1,16 +1,14 @@
-# shopping
+## 🛍 Shopping App (Flutter + BLoC)
+# Project Overview
+The Shopping App is a shopping application developed using Flutter and BLoC (Business Logic Component) for state management,
+# Key Features
+  * Display Product Listings
+  * Increase Product Quantity
+  * Remove Items from Cart
+  * Calculate Total Price
 
-A new Flutter project.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![image](https://github.com/user-attachments/assets/a38f3c65-a8c0-4fcd-bd76-97b33986dcfa)
+![image](https://github.com/user-attachments/assets/be2b6722-2737-4889-83c0-1432761f0674)
+![image](https://github.com/user-attachments/assets/a3e7dfb0-e160-4d2f-b321-0f07798486d1)
+![image](https://github.com/user-attachments/assets/39311775-e89f-4614-9dad-6af1c62d9ae6)
